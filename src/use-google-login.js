@@ -12,6 +12,8 @@ const useGoogleLogin = ({
   cookiePolicy,
   loginHint,
   hostedDomain,
+  includeGrantedScopes = true,
+  clientLibraries = ['auth2'],
   autoLoad,
   isSignedIn,
   fetchBasicProfile,
@@ -85,6 +87,7 @@ const useGoogleLogin = ({
           cookie_policy: cookiePolicy,
           login_hint: loginHint,
           hosted_domain: hostedDomain,
+          include_granted_scopes: includeGrantedScopes,
           fetch_basic_profile: fetchBasicProfile,
           discoveryDocs,
           ux_mode: uxMode,
@@ -97,7 +100,7 @@ const useGoogleLogin = ({
           params.access_type = 'offline'
         }
 
-        window.gapi.load('auth2', () => {
+        window.gapi.load(clientLibraries.join(':'), () => {
           const GoogleAuth = window.gapi.auth2.getAuthInstance()
           if (!GoogleAuth) {
             window.gapi.auth2.init(params).then(
